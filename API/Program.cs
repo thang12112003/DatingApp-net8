@@ -2,6 +2,7 @@ using API;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using API.Extensions;
+using API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 // Configure the HTTP request pipeline.
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod()
     .WithOrigins("http://localhost:4200", "https://localhost:4200"));
     
