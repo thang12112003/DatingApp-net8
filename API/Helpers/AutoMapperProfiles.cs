@@ -12,8 +12,11 @@ public class AutoMapperProfiles : Profile
         {
             CreateMap<AppUser, MemberDto>()//Điều này giúp AutoMapper chuyển đổi một AppUser thành MemberDto mà không cần viết thủ công.
                 .ForMember(d => d.PhotoUrl, o => 
-                o.MapFrom(s => s.Photos.FirstOrDefault(x => x.IsMain)!.Url))
+                o.MapFrom(s => s.Photos != null ? s.Photos.FirstOrDefault(x => x.IsMain)!.Url : null))
                 .ForMember(dest => dest.Age, opt => opt.MapFrom(s => s.DateOfBirth.CalculateAge()));
             CreateMap<Photo, PhotoDto>();
+            CreateMap<MemberUpdateDto, AppUser>();
+            CreateMap<RegisterDto, AppUser>();
+            CreateMap<string, DateOnly>().ConvertUsing(s => DateOnly.Parse(s));
         }
 }

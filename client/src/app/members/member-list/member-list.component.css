@@ -1,1 +1,20 @@
 
+.member-card {
+  flex: 1 1 calc(25% - 20px); /* 3 cột mỗi hàng, trừ margin */
+  max-width: calc(25% - 20px);
+  margin: 10px;
+}
+
+@media (max-width: 992px) { /* Tablet */
+  .member-card {
+    flex: 1 1 calc(50% - 20px); /* 2 card mỗi hàng */
+    max-width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 576px) { /* Mobile */
+  .member-card {
+    flex: 1 1 calc(100% - 20px); /* 1 card mỗi hàng */
+    max-width: calc(100% - 20px);
+  }
+}

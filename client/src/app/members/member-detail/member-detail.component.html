@@ -1,8 +1,8 @@
-@if(member){x
+@if(member){
   <div class="row">
     <div class="col-4">
         <div class="card">
-            <img src="{{member.photoUrl || './assets/user.png'}}"
+            <img src="{{member.photoUrl || 'https://res.cloudinary.com/dqfmh4yif/image/upload/v1741941116/Dating-app/bqgtq2hhpu0xcdjfmj2d.png'}}"
                  alt="{{member.knownAs}}"
                 class="card-img-top img-thumbnail">
             <div class="card-body">
@@ -48,6 +48,7 @@
               @if(photoTab.active){
                 <gallery
                   [items]="images"
+                  [itemAutosize]="true"
                   class="gallery"
                 ></gallery>
               }

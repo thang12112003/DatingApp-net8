@@ -20,11 +20,16 @@
 
     @if (accountService.currentUser()) {
       <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <img
+        class="me-2"
+        src="{{accountService.currentUser()?.photoUrl ||
+        'https://res.cloudinary.com/dqfmh4yif/image/upload/v1741941116/Dating-app/bqgtq2hhpu0xcdjfmj2d.png'}}"
+        alt="user main image">
+        <a class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           Welcome {{accountService.currentUser()?.username | titlecase}}
-        </button>
+        </a>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Edit profile</a></li>
+          <li><a class="dropdown-item" routerLink="member/edit">Edit profile</a></li>
           <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
         </ul>
       </div>
