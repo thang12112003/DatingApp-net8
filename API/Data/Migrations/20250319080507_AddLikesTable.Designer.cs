@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250319080507_AddLikesTable")]
+    partial class AddLikesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.4");
@@ -105,12 +108,12 @@ namespace API.Data.Migrations
                     b.Property<int>("SourceUserId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("TargetUserId")
+                    b.Property<int>("TargeUserId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("SourceUserId", "TargetUserId");
+                    b.HasKey("SourceUserId", "TargeUserId");
 
-                    b.HasIndex("TargetUserId");
+                    b.HasIndex("TargeUserId");
 
                     b.ToTable("Likes");
                 });
@@ -134,15 +137,15 @@ namespace API.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Entities.AppUser", "TargetUser")
+                    b.HasOne("API.Entities.AppUser", "TargeUser")
                         .WithMany("LikedByUsers")
-                        .HasForeignKey("TargetUserId")
+                        .HasForeignKey("TargeUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("SourceUser");
 
-                    b.Navigation("TargetUser");
+                    b.Navigation("TargeUser");
                 });
 
             modelBuilder.Entity("API.Entities.AppUser", b =>

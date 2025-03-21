@@ -26,7 +26,7 @@
         'https://res.cloudinary.com/dqfmh4yif/image/upload/v1741941116/Dating-app/bqgtq2hhpu0xcdjfmj2d.png'}}"
         alt="user main image">
         <a class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Welcome {{accountService.currentUser()?.username | titlecase}}
+          Welcome {{accountService.currentUser()?.knownAs }}
         </a>
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" routerLink="member/edit">Edit profile</a></li>

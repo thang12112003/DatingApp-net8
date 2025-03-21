@@ -3,11 +3,10 @@ import { FormsModule } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-nav',
-  imports: [FormsModule, RouterLink, RouterLinkActive, TitleCasePipe],
+  imports: [FormsModule, RouterLink, RouterLinkActive],
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.css'
 })

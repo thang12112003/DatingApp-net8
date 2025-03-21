@@ -12,6 +12,10 @@ export class AccountService {
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser = signal<User | null>(null);
 
+  constructor() {
+    this.loadCurrentUser(); // Load user khi service được khởi tạo
+  }
+
   login(model:any){
     return this.http.post<User>(this.baseUrl + 'account/login', model).pipe(
       map( user => {
@@ -42,5 +46,13 @@ export class AccountService {
   logout(){
     localStorage.removeItem('user');
     this.currentUser.set(null);
+  }
+
+  loadCurrentUser() {
+    const userJson = localStorage.getItem('user');
+    if (userJson) {
+      const user: User = JSON.parse(userJson);
+      this.currentUser.set(user);
+    }
   }
 }
