@@ -7,7 +7,7 @@ import { provideToastr } from 'ngx-toastr';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
 import { jwtInterceptor } from './_interceptors/jwt.interceptor';
 import { NgxSpinner } from 'ngx-spinner';
-import { loadingInterceptor } from './_intercaptors/loading.interceptor';
+import { loadingInterceptor } from './_interceptors/loading.interceptor';
 import { TimeagoModule } from 'ngx-timeago';
 
 export const appConfig: ApplicationConfig = {

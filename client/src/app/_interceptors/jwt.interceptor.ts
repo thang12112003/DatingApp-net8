@@ -15,8 +15,6 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {// tự động
   }
   console.log('Intercepting request:', req.url);
 
-  console.log('Current User:', accountService.currentUser());
-
   return next(req).pipe(
     tap(event => console.log('Intercepted Response:', event)), // Log response từ Interceptor
     catchError(error => {
