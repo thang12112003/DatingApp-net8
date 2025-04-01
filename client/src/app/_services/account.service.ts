@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { User } from '../_models/user';
 import { map, ReplaySubject } from 'rxjs';
 
@@ -11,6 +11,14 @@ export class AccountService {
   baseUrl = "https://localhost:5001/api/";
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser = signal<User | null>(null);
+  roles = computed(() => {
+    const user = this.currentUser();
+    if (user && user.token) {
+      const role = JSON.parse(atob(user.token.split('.')[1])).role
+      return Array.isArray(role) ? role : [role];
+    }
+    return [];
+  })
 
   constructor() {
     this.loadCurrentUser(); // Load user khi service được khởi tạo

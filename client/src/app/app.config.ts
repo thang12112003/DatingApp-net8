@@ -6,22 +6,29 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
 import { jwtInterceptor } from './_interceptors/jwt.interceptor';
-import { NgxSpinner } from 'ngx-spinner';
+import { NgxSpinnerModule } from 'ngx-spinner'; // Sửa thành NgxSpinnerModule
 import { loadingInterceptor } from './_interceptors/loading.interceptor';
 import { TimeagoModule } from 'ngx-timeago';
+import { ModalModule } from 'ngx-bootstrap/modal'; // Thêm ModalModule
+import { TabsModule } from 'ngx-bootstrap/tabs';   // Thêm TabsModule
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(
-      withInterceptorsFromDi(),  // Hỗ trợ interceptors dạng class (ErrorInterceptor)
-      withInterceptors([jwtInterceptor, loadingInterceptor]) // Thêm function-based interceptor đúng cách
+      withInterceptorsFromDi(), // Hỗ trợ interceptors dạng class (ErrorInterceptor)
+      withInterceptors([jwtInterceptor, loadingInterceptor]) // Function-based interceptors
     ),
-    importProvidersFrom(NgxSpinner , TimeagoModule.forRoot()), // Import providers từ module khác
+    importProvidersFrom(
+      NgxSpinnerModule, // Sửa từ NgxSpinner thành NgxSpinnerModule
+      TimeagoModule.forRoot(),
+      ModalModule.forRoot(), // Cung cấp ModalModule
+      TabsModule.forRoot()   // Cung cấp TabsModule
+    ),
     provideAnimations(),
     provideToastr({
       positionClass: 'toast-bottom-right'
     }),
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true } // Giữ lại interceptor lỗi
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true } // Interceptor lỗi
   ]
 };
