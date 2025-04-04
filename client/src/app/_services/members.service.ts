@@ -1,7 +1,7 @@
 import { inject, Injectable, Signal, signal } from '@angular/core';
 import { HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import { Member } from '../_models/member';
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.development';
 import { AccountService } from './account.service';
 import { of, tap } from 'rxjs';
 import { Photo } from '../_models/photo';
@@ -13,6 +13,7 @@ import { setPaginatedResponse, setPaginationHeader } from './paginationHelper';
   providedIn: 'root'
 })
 export class MembersService {
+  baseUrl = environment.apiUrl;
   private accountService = inject(AccountService);
   private http = inject(HttpClient);
   // members = signal<Member[]>([]);
@@ -37,7 +38,7 @@ export class MembersService {
     params = params.append('gender', this.userParams().gender);
     params = params.append('orderBy', this.userParams().orderBy);
 
-    return this.http.get<Member[]>('https://localhost:5001/api/users', { observe: 'response', params }).subscribe({
+    return this.http.get<Member[]>(this.baseUrl +  'users', { observe: 'response', params }).subscribe({
       next: response => {
         setPaginatedResponse(response , this.paginatedResult);
         this.memberCache.set(Object.values(this.userParams()).
@@ -58,7 +59,7 @@ export class MembersService {
       return of(cachedMember);
     }
 
-    return this.http.get<Member>(`https://localhost:5001/api/users/${username}`).pipe(
+    return this.http.get<Member>(this.baseUrl +  `users/${username}`).pipe(
       tap(member => {
         this.memberDetailCache.set(username, member);
       })
@@ -66,7 +67,7 @@ export class MembersService {
   }
 
   updateMember(member: any) {
-    return this.http.put('https://localhost:5001/api/users/', member).pipe(
+    return this.http.put(this.baseUrl +  'users/', member).pipe(
       // tap(()=>{
       //   this.members.update(members => members.map(m => m.username === member.username
       //     ? member : m))
@@ -74,7 +75,7 @@ export class MembersService {
     );
   }
   setMainPhoto(photo: Photo) {
-    return this.http.put('https://localhost:5001/api/users/set-main-photo/' + photo.id, {}).pipe(
+    return this.http.put(this.baseUrl +  'users/set-main-photo/' + photo.id, {}).pipe(
       // tap(() => {
       //   this.members.update(members => members.map(m =>{
       //     if(m.photos.includes(photo)) {
@@ -87,7 +88,7 @@ export class MembersService {
   }
 
   deletePhoto(photo: Photo) {
-    return this.http.delete('https://localhost:5001/api/users/delete-photo/' + photo.id).pipe(
+    return this.http.delete(this.baseUrl +  'users/delete-photo/' + photo.id).pipe(
       // tap(() => {
       //   this.members.update(members => members.map(m => {
       //     if(m.photos.includes(photo)){

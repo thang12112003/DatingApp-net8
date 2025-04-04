@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
- import { environment } from '../../environments/environment';
+ import { environment } from '../../environments/environment.development';
  import { HttpClient } from '@angular/common/http';
  import { User } from '../_models/user';
 
@@ -7,7 +7,7 @@ import { Injectable, inject } from '@angular/core';
    providedIn: 'root'
  })
  export class AdminService {
-  baseUrl = "https://localhost:5001/api/";
+  baseUrl = environment.apiUrl;
    private http = inject(HttpClient);
 
    getUserWithRoles() {

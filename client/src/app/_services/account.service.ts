@@ -2,13 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { User } from '../_models/user';
 import { map, ReplaySubject } from 'rxjs';
+import { environment } from '../../environments/environment.development';
+import { PresenceService } from './presence.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
   private http = inject(HttpClient);
-  baseUrl = "https://localhost:5001/api/";
+  private presenceService = inject(PresenceService);
+  baseUrl = environment.apiUrl;
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser = signal<User | null>(null);
   roles = computed(() => {
@@ -30,6 +33,7 @@ export class AccountService {
         if(user){
           localStorage.setItem('user' , JSON.stringify(user));
           this.currentUser.set(user);
+          this.presenceService.createHubConnection(user)
         }
       })
     )
@@ -41,6 +45,7 @@ export class AccountService {
           localStorage.setItem('user', JSON.stringify(user));
           this.currentUserSource.next(user);
           this.currentUser.set(user); // Update currentUser signal after registration
+          this.presenceService.createHubConnection(user)
         }
       })
     )
@@ -54,6 +59,7 @@ export class AccountService {
   logout(){
     localStorage.removeItem('user');
     this.currentUser.set(null);
+    this.presenceService.stopHubConnection();
   }
 
   loadCurrentUser() {
