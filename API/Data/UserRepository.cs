@@ -56,16 +56,22 @@ namespace API.Data
                      userParams.PageNumber, userParams.PageSize);
          }
 
-        public async Task<AppUser?> GetUserByIdAsync(int id)
+        public async Task<AppUser> GetUserByIdAsync(int id)
         {
-            return await _context.Users.FindAsync(id);
+            return await _context.Users.FindAsync(id) ?? throw new InvalidOperationException("User not found");
         }
 
-            public async Task<AppUser?> GetUserByUsernameAsync(string username)
+            public async Task<AppUser> GetUserByUsernameAsync(string username)
             {
+                if (string.IsNullOrEmpty(username))
+                {
+                    throw new ArgumentException("Username cannot be null or empty", nameof(username));
+                }
+
                 return await _context.Users
                     .Include(u => u.Photos)  // Đảm bảo load luôn danh sách ảnh
-                    .FirstOrDefaultAsync(u => u.UserName.ToLower() == username.ToLower());
+                    .FirstOrDefaultAsync(u => u.UserName!.ToLower() == username.ToLower()) 
+                    ?? throw new InvalidOperationException("User not found");
             }
 
 
@@ -74,11 +80,6 @@ namespace API.Data
             return await _context.Users
                 .Include(p => p.Photos)
                 .ToListAsync();
-        }
-
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
         }
 
         public void Update(AppUser user)

@@ -29,6 +29,7 @@ namespace API.Controllers
         public ActionResult<string> GetServerError()
         {
             var thing = _context.Users.Find(-1);
+            if (thing == null) return StatusCode(500, "Internal server error: object is null");
             var thingToReturn = thing.ToString();
             return thingToReturn;
         }

@@ -39,9 +39,11 @@ public class MessageRepository(DataContext context, IMapper mapper) : IMessageRe
              .FirstOrDefaultAsync();
      }
 
-    public async Task<Message?> GetMessage(int id)
+    public async Task<Message> GetMessage(int id)
     {
-       return await context.Messages.FindAsync(id);
+       var message = await context.Messages.FindAsync(id);
+       if (message == null) throw new InvalidOperationException("Message not found");
+       return message;
     }
 
     public async Task<Group?> GetMessageGroup(string groupName)
@@ -70,7 +72,7 @@ public class MessageRepository(DataContext context, IMapper mapper) : IMessageRe
     }
     public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUsername, string recipientUsername)
     {
-        var messages = await context.Messages
+        var query = context.Messages
 
              .Where(x => 
                  x.RecipientUsername == currentUsername 
@@ -81,28 +83,21 @@ public class MessageRepository(DataContext context, IMapper mapper) : IMessageRe
                      && x.RecipientUsername == recipientUsername
              )
              .OrderBy(x => x.MessageSent)
-             .ProjectTo<MessageDto>(mapper.ConfigurationProvider)
-             .ToListAsync();
+             .AsQueryable();
  
-         var unreadMessages = messages.Where(x => x.DateRead == null && 
+         var unreadMessages = query.Where(x => x.DateRead == null && 
              x.RecipientUsername == currentUsername).ToList();
  
          if (unreadMessages.Count != 0)
          {
              unreadMessages.ForEach(x => x.DateRead = DateTime.UtcNow);
-             await context.SaveChangesAsync();
          }
  
-         return messages;
+           return await query.ProjectTo<MessageDto>(mapper.ConfigurationProvider).ToListAsync();
     }
 
     public void RemoveConnection(Connection connection)
     {
           context.Connections.Remove(connection);
-    }
-
-    public async Task<bool> SaveAllAsync()
-    {
-        return await context.SaveChangesAsync() > 0;
     }
 }
