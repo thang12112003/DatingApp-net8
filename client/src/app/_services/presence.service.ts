@@ -1,5 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
- import { environment } from '../../environments/environment';
+ import { environment } from '../../environments/environment.prod';
  import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
  import { ToastrService } from 'ngx-toastr';
  import { User } from '../_models/user';

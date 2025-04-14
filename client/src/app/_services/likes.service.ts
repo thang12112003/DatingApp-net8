@@ -3,7 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Member } from '../_models/member';
 import { PaginatedResult } from '../_models/panination';
 import { setPaginatedResponse, setPaginationHeader } from './paginationHelper';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'

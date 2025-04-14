@@ -1,7 +1,7 @@
 import { inject, Injectable, Signal, signal } from '@angular/core';
 import { HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import { Member } from '../_models/member';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment.prod';
 import { AccountService } from './account.service';
 import { of, tap } from 'rxjs';
 import { Photo } from '../_models/photo';

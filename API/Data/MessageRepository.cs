@@ -75,7 +75,7 @@ public class MessageRepository(DataContext context, IMapper mapper) : IMessageRe
         var query = context.Messages
 
              .Where(x => 
-                 x.RecipientUsername == currentUsername 
+                 x.RecipientUsername == currentUsername     
                  && x.RecipientDeleted == false
                      && x.SenderUsername == recipientUsername ||
                  x.SenderUsername == currentUsername 

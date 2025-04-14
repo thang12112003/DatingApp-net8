@@ -3,7 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { PaginatedResult } from '../_models/panination';
 import { setPaginatedResponse, setPaginationHeader } from './paginationHelper';
 import { Message } from '../_models/message';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment.prod';
 import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
 import { User } from '../_models/user';
 import { Group } from '../_models/group';
