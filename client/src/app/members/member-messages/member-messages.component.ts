@@ -16,12 +16,16 @@ import { AfterViewChecked, Component, ViewChild, inject, input, output } from '@
    messageService = inject(MessageService)
    username = input.required<string>();
    messageContent = '';
+   loading = false;
 
    sendMessage() {
+    this.loading = true;
     this.messageService.sendMessage(this.username(), this.messageContent).then(() => {
       this.messageForm?.reset();
       this.scrollToBottom();
-    })
+    }).finally(() => {
+      this.loading = false;
+    });
   }
   ngAfterViewChecked(): void {
     this.scrollToBottom();
