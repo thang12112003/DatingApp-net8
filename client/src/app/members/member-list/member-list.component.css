@@ -18,3 +18,177 @@
     max-width: calc(100% - 20px);
   }
 }
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Tiêu đề */
+.text-center h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #e67e22; /* Màu cam đậm */
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Form lọc */
+form.d-flex {
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Input và Select */
+.form-control,
+.form-select {
+  border: 1px solid #f39c12; /* Viền cam sáng */
+  border-radius: 5px;
+  padding: 8px;
+  font-size: 0.9rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #d35400; /* Cam đậm khi focus */
+  box-shadow: 0 0 5px rgba(243, 156, 18, 0.5);
+  outline: none;
+}
+
+/* Label */
+.col-form-label {
+  font-size: 0.9rem;
+  color: #333;
+  margin-right: 5px;
+}
+
+/* Button */
+.btn-primary {
+  padding: 8px 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 25px;
+  background-color: #f39c12; /* Cam sáng */
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #d35400; /* Cam đậm */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Button group (Last Active/Newest Members) */
+.btn-group .btn-primary {
+  padding: 8px 15px;
+  font-size: 0.9rem;
+  border-radius: 5px;
+}
+
+.btn-group .btn-primary.active {
+  background-color: #d35400; /* Cam đậm khi active */
+  color: #fff;
+}
+
+/* Member card */
+app-member-card {
+  display: block;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 10px;
+}
+
+app-member-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Pagination */
+.d-flex.justify-content-center {
+  margin-top: 30px;
+}
+
+pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.pagination .page-link {
+  border-radius: 50%;
+  margin: 0 5px;
+  color: #f39c12; /* Cam sáng */
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.pagination .page-link:hover {
+  background-color: #d35400; /* Cam đậm */
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #f39c12;
+  border-color: #f39c12;
+  color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  form.d-flex {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .d-flex.mx-2 {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .form-control,
+  .form-select {
+    width: 100%;
+  }
+
+  .btn-primary {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .btn-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 768px) {
+  .text-center h2 {
+    font-size: 2rem;
+  }
+
+  app-member-card {
+    margin: 5px;
+  }
+}
+
+@media (max-width: 576px) {
+  .text-center h2 {
+    font-size: 1.8rem;
+  }
+
+  .container {
+    padding: 10px;
+  }
+}

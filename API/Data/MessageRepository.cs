@@ -21,6 +21,11 @@ public class MessageRepository(DataContext context, IMapper mapper) : IMessageRe
        context.Messages.Add(message);
     }
 
+    public void UpdateMessage(Message message)
+    {
+        context.Messages.Update(message);
+    }
+
     public void DeleteMessage(Message message)
     {
         context.Messages.Remove(message);

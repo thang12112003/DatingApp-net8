@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Member } from '../_models/member';
-import { PaginatedResult } from '../_models/panination';
+import { PaginatedResult } from '../_models/pagination';
 import { setPaginatedResponse, setPaginationHeader } from './paginationHelper';
 import { environment } from '../../environments/environment.prod';
 

@@ -63,6 +63,29 @@ namespace API.Controllers
  
          return Ok(await unitOfWork.MessageRepository.GetMessageThread(currentUsername, username));
      }
+
+     [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateMessage(int id, [FromBody] UpdateMessageDto updateMessageDto)
+{
+    var username = User.GetUsername();
+    var message = await unitOfWork.MessageRepository.GetMessage(id);
+
+    if (message == null) return NotFound("Message not found");
+    if (message.SenderUsername != username) return Forbid("You can only edit your own messages");
+    if (message.RecipientDeleted) return BadRequest("Cannot edit a message that has been deleted by the recipient");
+
+    if (updateMessageDto.Content == null) 
+        return BadRequest("Message content cannot be null");
+
+    message.Content = updateMessageDto.Content;
+    message.DateEdited = DateTime.UtcNow; // Lưu thời gian chỉnh sửa
+
+    unitOfWork.MessageRepository.UpdateMessage(message);
+
+    if (await unitOfWork.Complete()) return Ok(mapper.Map<MessageDto>(message));
+
+    return BadRequest("Failed to update message");
+}
  
      [HttpDelete("{id}")]
      public async Task<ActionResult> DeleteMessage(int id)

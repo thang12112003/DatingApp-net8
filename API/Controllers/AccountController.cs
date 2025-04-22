@@ -14,13 +14,21 @@ public class AccountController(UserManager<AppUser> userManager, ITokenService t
     public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
     {
          if (await UserExists(registerDto.Username)) return BadRequest("Username is taken");
+        if (!string.IsNullOrEmpty(registerDto.KnownAs) && await UserExists(registerDto.KnownAs)) 
+            return BadRequest("Known As is taken");
+
          var user = mapper.Map<AppUser>(registerDto);
 
          user.UserName = registerDto.Username.ToLower();
 
-          var result = await userManager.CreateAsync(user, registerDto.Password);
- 
-         if (!result.Succeeded) return BadRequest(result.Errors);
+        var result = await userManager.CreateAsync(user, registerDto.Password);
+        if (!result.Succeeded) return BadRequest(result.Errors);
+
+        // Gán role mặc định là "Member"
+        var roleResult = await userManager.AddToRoleAsync(user, "Member");
+        if (!roleResult.Succeeded) return BadRequest(roleResult.Errors);
+
+        if (!result.Succeeded) return BadRequest(result.Errors);
 
          return new UserDto
          {
@@ -34,11 +42,20 @@ public class AccountController(UserManager<AppUser> userManager, ITokenService t
     public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
     {
         var user = await userManager.Users
-        .Include(p => p.Photos)
-        .FirstOrDefaultAsync(x => 
-            x.NormalizedUserName == loginDto.Username.ToUpper());
+            .Include(p => p.Photos)
+            .FirstOrDefaultAsync(x => 
+                x.NormalizedUserName == loginDto.Username.ToUpper());
 
         if (user == null || user.UserName == null) return Unauthorized("Invalid username");
+        if (user.LockoutEnd != null && user.LockoutEnd > DateTimeOffset.UtcNow)
+        {
+            return Unauthorized("This account is locked.");
+        }
+        if (await userManager.IsLockedOutAsync(user))
+        {
+            return Unauthorized("This account has been locked. Please contact support.");
+        }
+
         return new UserDto
         {
             Username = user.UserName,

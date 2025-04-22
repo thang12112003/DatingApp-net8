@@ -56,8 +56,18 @@ export class RegisterComponent implements OnInit {
       },
       error: error => {
         console.error('Lỗi đăng ký:', error);
-        this.validationErrors = error;
+
+        if (Array.isArray(error)) {
+          this.validationErrors = error;
+        } else if (Array.isArray(error?.error)) {
+          this.validationErrors = error.error;
+        } else if (typeof error?.error === 'string') {
+          this.validationErrors = [error.error];
+        } else {
+          this.validationErrors = ['Something went wrong!'];
+        }
       }
+
     })
   }
   cancel() {

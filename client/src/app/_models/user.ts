@@ -5,4 +5,5 @@ export interface User {
   token : string;
   photoUrl? : string;
   roles: string[];
+  lockoutEnd?: Date | null;
 }

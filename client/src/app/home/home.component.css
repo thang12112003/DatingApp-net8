@@ -1,0 +1,60 @@
+/* Container styling */
+.container {
+  margin-top: 80px;
+  padding: 20px;
+}
+
+/* Heading */
+h1 {
+  font-size: 2.8rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #343a40;
+}
+
+p.lead {
+  font-size: 1.25rem;
+  color: #6c757d;
+  margin-bottom: 30px;
+}
+
+/* Buttons */
+button.btn-lg {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+button.btn-primary:hover {
+  background-color: #0d6efd;
+  transform: scale(1.05);
+}
+
+button.btn-info:hover {
+  background-color: #0dcaf0;
+  transform: scale(1.05);
+}
+
+/* Responsive register container */
+@media (max-width: 768px) {
+  .col-4 {
+    width: 100% !important;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  p.lead {
+    font-size: 1rem;
+  }
+}
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

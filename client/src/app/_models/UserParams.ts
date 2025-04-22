@@ -5,8 +5,9 @@ import { User } from './user';
      minAge = 18;
      maxAge = 99;
      pageNumber = 1;
-     pageSize = 5;
+     pageSize = 8;
      orderBy = 'lastActive';
+     searchTerm: string = '';
 
      constructor(user: User | null) {
          this.gender = user && user.gender === 'female' ? 'male' : 'female';

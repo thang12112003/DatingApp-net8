@@ -12,7 +12,11 @@ public static class IdentityServiceExtensions
     {
         services.AddIdentityCore<AppUser>(opt =>
          {
-             opt.Password.RequireNonAlphanumeric = false;
+            opt.Password.RequireNonAlphanumeric = false;
+             // Bật tính năng lockout
+            opt.Lockout.AllowedForNewUsers = true;
+            opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+            opt.Lockout.MaxFailedAccessAttempts = 5;
          })
              .AddRoles<AppRole>()
              .AddRoleManager<RoleManager<AppRole>>()

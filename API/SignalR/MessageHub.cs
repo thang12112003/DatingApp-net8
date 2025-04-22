@@ -124,4 +124,57 @@
          var stringCompare = string.CompareOrdinal(caller, other) < 0;
          return stringCompare ? $"{caller}-{other}" : $"{other}-{caller}";
      }
+
+     public async Task UpdateMessage(UpdateMessageDto updateMessageDto, int messageId)
+{
+    var username = Context.User?.GetUsername() ?? throw new HubException("Could not get user");
+    var message = await unitOfWork.MessageRepository.GetMessage(messageId);
+
+    if (message == null) throw new HubException("Message not found");
+    if (message.SenderUsername != username) throw new HubException("You can only edit your own messages");
+    if (message.RecipientDeleted) throw new HubException("Cannot edit a message that has been deleted by the recipient");
+
+    message.Content = updateMessageDto.Content ?? throw new HubException("Message content cannot be null");
+    message.DateEdited = DateTime.UtcNow;
+
+    unitOfWork.MessageRepository.UpdateMessage(message);
+
+    if (await unitOfWork.Complete())
+    {
+        var groupName = GetGroupName(username, message.RecipientUsername);
+        await Clients.Group(groupName).SendAsync("UpdatedMessage", mapper.Map<MessageDto>(message));
+    }
+    else
+    {
+        throw new HubException("Failed to update message");
+    }
+}
+
+public async Task DeleteMessage(int messageId)
+{
+    var username = Context.User?.GetUsername() ?? throw new HubException("Could not get user");
+    var message = await unitOfWork.MessageRepository.GetMessage(messageId);
+
+    if (message == null) throw new HubException("Message not found");
+    if (message.SenderUsername != username && message.RecipientUsername != username)
+        throw new HubException("You cannot delete this message");
+
+    if (message.SenderUsername == username) message.SenderDeleted = true;
+    if (message.RecipientUsername == username) message.RecipientDeleted = true;
+
+    if (message is { SenderDeleted: true, RecipientDeleted: true })
+    {
+        unitOfWork.MessageRepository.DeleteMessage(message);
+    }
+
+    if (await unitOfWork.Complete())
+    {
+        var groupName = GetGroupName(message.SenderUsername, message.RecipientUsername);
+        await Clients.Group(groupName).SendAsync("DeletedMessage", messageId);
+    }
+    else
+    {
+        throw new HubException("Failed to delete message");
+    }
+}
  }
