@@ -1,0 +1,185 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Button group */
+.btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.btn-group .btn-primary.tab-btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 25px;
+  background-color: #f39c12; /* Cam sáng */
+  border: none;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.btn-group .btn-primary.tab-btn:hover,
+.btn-group .btn-primary.tab-btn.active-tab {
+  background-color: #d35400; /* Cam đậm */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+
+/* Thông báo không có tin nhắn */
+.text-muted {
+  font-size: 1.5rem;
+  color: #e67e22; /* Cam đậm */
+  text-align: center;
+  margin-top: 20px;
+  font-weight: 500;
+}
+
+/* Bảng tin nhắn */
+.table {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.table thead {
+  background-color: #f39c12; /* Cam sáng */
+  color: #fff;
+}
+
+.table thead th {
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 12px;
+  border: none;
+}
+
+.table tbody tr {
+  transition: background-color 0.3s ease;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(243, 156, 18, 0.1); /* Cam nhạt */
+  cursor: pointer;
+}
+
+.table tbody td {
+  padding: 12px;
+  vertical-align: middle;
+  border: none;
+}
+
+.table tbody td img.rounded-circle {
+  border: 2px solid #f39c12; /* Viền cam */
+  object-fit: cover;
+}
+
+.table tbody td strong {
+  color: #e67e22; /* Cam đậm */
+}
+
+/* Nút Xóa */
+.btn-danger {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  border-radius: 5px;
+  background-color: #e74c3c; /* Đỏ để nổi bật */
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b; /* Đỏ đậm */
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Pagination */
+.d-flex.justify-content-center {
+  margin-top: 30px;
+}
+
+pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.pagination .page-link {
+  border-radius: 50%;
+  margin: 0 5px;
+  color: #f39c12; /* Cam sáng */
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.pagination .page-link:hover {
+  background-color: #d35400; /* Cam đậm */
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #f39c12;
+  border-color: #f39c12;
+  color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .btn-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-group .btn-primary.tab-btn {
+    width: 100%;
+  }
+
+  .table {
+    font-size: 0.9rem;
+  }
+
+  .table thead th,
+  .table tbody td {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .table thead th,
+  .table tbody td {
+    font-size: 0.85rem;
+  }
+
+  .table tbody td img.rounded-circle {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 10px;
+  }
+
+  .text-muted {
+    font-size: 1.2rem;
+  }
+
+  .btn-danger {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+}

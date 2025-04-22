@@ -1,0 +1,99 @@
+<div class="card" style="height: 550px;">
+  <div class="card-body p-0">
+    @if (messageService.messageThread().length === 0) {
+    <p class="text-center my-3">No messages yet</p>
+    } @else {
+    <ul class="chat-list" #scrollMe>
+      @for (message of messageService.messageThread(); track message.id) {
+      <li
+        [ngClass]="{'text-start': message.senderUsername !== currentUsername, 'text-end': message.senderUsername === currentUsername}"
+        class="position-relative chat-item" (mouseenter)="showMenu(message.id, message.senderUsername)"
+        (mouseleave)="hideMenu()">
+        <div class="d-flex flex-column px-3 py-1"
+          [ngClass]="{'align-items-start': message.senderUsername !== currentUsername, 'align-items-end': message.senderUsername === currentUsername}">
+
+          <div class="d-flex"
+            [ngClass]="{'justify-content-start': message.senderUsername !== currentUsername, 'justify-content-end': message.senderUsername === currentUsername}">
+
+            <!-- Avatar bên trái -->
+            <div *ngIf="message.senderUsername !== currentUsername" class="chat-img me-2">
+              <img class="rounded-circle"
+                [src]="message.senderPhotoUrl || 'https://res.cloudinary.com/dqfmh4yif/image/upload/v1741941116/Dating-app/bqgtq2hhpu0xcdjfmj2d.png'"
+                alt="Sender" width="32" height="32">
+            </div>
+
+            <!-- Nếu là tin nhắn của bạn thì menu nằm bên trái -->
+            @if (message.senderUsername === currentUsername && showMenuId === message.id) {
+            <div class="message-menu-left">
+              <button class="menu-btn" (click)="toggleMenu(message.id)">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="4" r="2" fill="currentColor"/>
+                <circle cx="12" cy="12" r="2" fill="currentColor"/>
+                <circle cx="12" cy="20" r="2" fill="currentColor"/>
+                </svg>              </button>
+              @if (openMenuId === message.id) {
+              <div class="menu-dropdown">
+                <button class="menu-item" (click)="editMessage(message)">Sửa</button>
+                <button class="menu-item delete" (click)="deleteMessage(message.id)">Xóa</button>
+              </div>
+              }
+            </div>
+            }
+
+            <!-- Nội dung tin nhắn -->
+            <div class="chat-bubble" [ngClass]="{'editing': editingMessageId === message.id}">
+              @if (editingMessageId === message.id) {
+              <textarea [(ngModel)]="editContent" (blur)="saveEdit(message.id)" (keydown.enter)="saveEdit(message.id)"
+                (keydown.escape)="cancelEdit()" class="form-control edit-input" rows="2" autofocus></textarea>
+              } @else {
+              <p class="mb-0">{{message.content}}</p>
+              @if (message.dateEdited) {
+              <small class="text-muted edited-text">(Edit {{ message.dateEdited | timeago }})</small>
+              }
+              }
+            </div>
+
+            <!-- Avatar bên phải -->
+            <div *ngIf="message.senderUsername === currentUsername" class="chat-img ms-2">
+              <img class="rounded-circle"
+                [src]="message.senderPhotoUrl || 'https://res.cloudinary.com/dqfmh4yif/image/upload/v1741941116/Dating-app/bqgtq2hhpu0xcdjfmj2d.png'"
+                alt="Receiver" width="32" height="32">
+            </div>
+          </div>
+
+          <!-- Meta -->
+          <div class="message-meta small text-muted mt-1"
+            [ngClass]="{'text-start': message.senderUsername !== currentUsername, 'text-end': message.senderUsername === currentUsername}">
+            <span class="fa fa-clock-o">{{message.messageSent | timeago}}</span>
+            @if (!message.dateRead && message.senderUsername === currentUsername) {
+            <span class="text-danger"> (unread)</span>
+            }
+            @if (message.dateRead && message.senderUsername === currentUsername) {
+            <span class="text-success"> (read {{message.dateRead | timeago}})</span>
+            }
+          </div>
+        </div>
+      </li>
+
+      }
+    </ul>
+    }
+  </div>
+
+  <div class="card-footer">
+    <form #messageForm="ngForm" (ngSubmit)="sendMessage()">
+      <div class="input-group">
+        <textarea name="messageContent" required [(ngModel)]="messageContent" class="form-control input-sm auto-resize"
+          rows="1" placeholder="Send a private message"></textarea>
+        <div class="input-group-append">
+          <button [disabled]="!messageForm.valid" class="btn btn-primary" type="submit">
+            Send
+            @if (loading) {
+            <i class="fa fa-spinner fa-spin"></i>
+            }
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

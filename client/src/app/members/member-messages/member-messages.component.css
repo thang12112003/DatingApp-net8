@@ -1,0 +1,223 @@
+/* Chat list */
+.chat-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  height: 450px;
+  overflow-y: auto;
+  background: #f9f9f9;
+}
+
+.chat-item {
+  padding: 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  word-break: break-word;
+}
+
+
+.chat-bubble {
+  max-width: 70%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #f39c12;
+  color: #fff;
+  position: relative;
+  word-wrap: break-word;         /* Tự xuống dòng với từ dài */
+  overflow-wrap: break-word;     /* Hỗ trợ các trình duyệt mới */
+  white-space: pre-wrap;         /* Bảo toàn xuống dòng \n nếu có */
+  word-break: break-word;        /* Nếu cần cắt từ giữa */
+}
+
+.chat-bubble.editing {
+  background: #fff;
+  border: 1px solid #f39c12;
+}
+
+.text-start .chat-bubble {
+  background: #e67e22; /* Cam đậm cho tin nhắn đối phương */
+}
+
+.text-end .chat-bubble {
+  background: #d35400; /* Cam đậm hơn cho tin nhắn của bạn */
+}
+
+.chat-img img {
+  border: 2px solid #f39c12;
+}
+
+.message-meta {
+  font-size: 0.75rem;
+}
+
+/* Menu ba chấm */
+.message-menu {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  display: none; /* Ẩn mặc định */
+}
+
+.text-end .message-menu {
+  display: block; /* Chỉ hiển thị cho tin nhắn của bạn */
+}
+
+.chat-item:hover .message-menu {
+  display: block; /* Hiển thị khi hover */
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  color: #f39c12;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.menu-btn:hover {
+  color: #d35400;
+}
+
+.menu-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  border: 1px solid #f39c12;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  min-width: 100px;
+}
+
+.menu-item {
+  display: block;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  text-align: left;
+  width: 100%;
+  color: #e67e22;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background: #f39c12;
+  color: #fff;
+}
+
+.menu-item.delete {
+  color: #e74c3c;
+}
+
+.menu-item.delete:hover {
+  background: #e74c3c;
+  color: #fff;
+}
+
+/* Input chỉnh sửa */
+.edit-input {
+  border: 1px solid #f39c12;
+  border-radius: 5px;
+  padding: 6px;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.edit-input:focus {
+  border-color: #d35400;
+  box-shadow: 0 0 5px rgba(243, 156, 18, 0.5);
+  outline: none;
+}
+
+.edited-text {
+  font-size: 0.7rem;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* Card và form */
+.card {
+  border: 1px solid #f39c12;
+  border-radius: 10px;
+}
+
+.card-footer .form-control {
+  border: 1px solid #f39c12;
+  border-radius: 5px;
+}
+
+.card-footer .btn-primary {
+  background: #f39c12;
+  border: none;
+  border-radius: 5px;
+}
+
+.card-footer .btn-primary:hover {
+  background: #d35400;
+}
+/* Menu ba chấm dưới cùng */
+.message-menu-bottom {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  margin-top: 4px;
+  z-index: 10;
+}
+
+.message-menu-bottom .menu-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  border: 1px solid #f39c12;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  min-width: 100px;
+  z-index: 20;
+}
+
+/* Ẩn menu mặc định ở trên (nếu còn) */
+.message-menu {
+  display: none !important;
+}
+/* Menu ba chấm nằm bên trái bong bóng chat */
+.message-menu-left {
+  position: relative;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.message-menu-left .menu-btn {
+  background: none;
+  border: none;
+  color: #f39c12;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.message-menu-left .menu-btn:hover {
+  color: #d35400;
+}
+
+.message-menu-left .menu-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fff;
+  border: 1px solid #f39c12;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  min-width: 100px;
+  z-index: 20;
+}
