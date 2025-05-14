@@ -1,0 +1,276 @@
+/* Modal backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Modal dialog */
+.modal-dialog {
+  max-width: 600px;
+  width: 90%;
+  margin: 0 auto;
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Modal content */
+.modal-content {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+/* Modal header */
+.modal-header {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  padding: 15px 20px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.btn-close-white {
+  filter: invert(1);
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.btn-close-white:hover {
+  opacity: 1;
+}
+
+/* Modal body */
+.modal-body {
+  padding: 20px;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Comment scroll area */
+.comment-scroll-area {
+  max-height: 50vh;
+  overflow-y: auto;
+  padding-right: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: #007bff #f1f1f1;
+}
+
+/* Custom scrollbar for WebKit browsers */
+.comment-scroll-area::-webkit-scrollbar {
+  width: 8px;
+}
+
+.comment-scroll-area::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.comment-scroll-area::-webkit-scrollbar-thumb {
+  background: #007bff;
+  border-radius: 4px;
+}
+
+.comment-scroll-area::-webkit-scrollbar-thumb:hover {
+  background: #0056b3;
+}
+
+/* Comment box */
+.comment-box {
+  padding: 12px 0;
+  transition: background-color 0.2s;
+}
+
+.comment-box:hover {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.comment-box img {
+  object-fit: cover;
+  transition: transform 0.2s;
+}
+
+.comment-box img:hover {
+  transform: scale(1.1);
+}
+
+.comment-box strong {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.comment-box .text-muted {
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+.comment-box p {
+  font-size: 0.9rem;
+  color: #444;
+  margin: 8px 0 0;
+}
+
+/* Action buttons (edit/delete) */
+.comment-box .btn-outline-secondary,
+.comment-box .btn-outline-danger {
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.comment-box .btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: white;
+}
+
+.comment-box .btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Edit comment form */
+.comment-box .form-control {
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+  transition: border-color 0.2s;
+}
+
+.comment-box .form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.comment-box .btn-success,
+.comment-box .btn-secondary {
+  padding: 4px 12px;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.comment-box .btn-success:hover {
+  background-color: #218838;
+}
+
+.comment-box .btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+/* Comment input area */
+.modal-body > div:last-child .form-control {
+  font-size: 0.9rem;
+  border-radius: 6px;
+  resize: none;
+  transition: border-color 0.2s;
+}
+
+.modal-body > div:last-child .form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.modal-body .text-danger {
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+
+/* Submit button */
+.modal-body .btn-primary {
+  font-size: 0.95rem;
+  padding: 8px;
+  border-radius: 6px;
+  background: #007bff;
+  border: none;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.modal-body .btn-primary:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+}
+
+.modal-body .btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Separator */
+.comment-box hr {
+  margin: 10px 0;
+  border-color: #e9ecef;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive design */
+@media (max-width: 576px) {
+  .modal-dialog {
+    width: 95%;
+    margin: 10px;
+  }
+
+  .modal-header {
+    padding: 12px 15px;
+  }
+
+  .modal-title {
+    font-size: 1.1rem;
+  }
+
+  .modal-body {
+    padding: 15px;
+  }
+
+  .comment-scroll-area {
+    max-height: 45vh;
+  }
+
+  .comment-box {
+    padding: 10px 0;
+  }
+
+  .comment-box img {
+    width: 25px;
+    height: 25px;
+  }
+
+  .comment-box strong {
+    font-size: 0.9rem;
+  }
+
+  .comment-box p {
+    font-size: 0.85rem;
+  }
+
+  .modal-body .btn-primary {
+    font-size: 0.9rem;
+    padding: 7px;
+  }
+}

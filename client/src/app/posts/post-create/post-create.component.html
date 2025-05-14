@@ -1,0 +1,56 @@
+<div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <form (ngSubmit)="createPost()" #postForm="ngForm" enctype="multipart/form-data">
+        <div class="modal-header">
+          <h5 class="modal-title">Create Post</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <textarea class="form-control mb-3" name="content" [(ngModel)]="postContent" rows="4"
+            placeholder="What's on your mind?" required></textarea>
+
+          <div class="border rounded p-3 text-center"
+               (drop)="onDrop($event)"
+               (dragover)="allowDrop($event)"
+               (dragenter)="dragging = true"
+               (dragleave)="dragging = false"
+               [class.bg-light]="dragging">
+            <p class="text-muted">Drag & drop images here or click to upload</p>
+            <input type="file" (change)="onFileSelected($event)" multiple hidden #fileInput accept="image/*">
+            <button type="button" class="btn btn-outline-primary"
+            (click)="fileInput.click()"
+            [disabled]="selectedFiles.length >= MAX_FILES">
+      Select Files
+    </button>
+  </div>
+
+          <div *ngIf="previewUrls.length > 0" class="mt-3">
+            <strong>Preview:</strong>
+            <div class="row g-2 mt-1">
+              <div class="col-4" *ngFor="let url of previewUrls; let i = index">
+                <div class="position-relative">
+                  <img [src]="url" class="img-fluid rounded border" alt="Preview image" />
+                  <button type="button"
+                          class="btn btn-danger btn-sm position-absolute top-0 end-0"
+                          (click)="removeFile(i)">
+                    &times;
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary"
+                  [disabled]="!postForm.valid || selectedFiles.length > 10">
+            Post
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

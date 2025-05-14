@@ -14,6 +14,7 @@ import { preventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.gu
 import { memberDetailedResolver } from './_resolvers/member-detailed.resolver';
 import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 import { adminGuard } from './_guards/admin.guard';
+import { PostListComponent } from './posts/post-list/post-list.component';
 
 export const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -22,6 +23,7 @@ export const routes: Routes = [
     runGuardsAndResolvers: 'always',
     canActivate: [authGuard],
     children: [
+      {path: 'posts', component: PostListComponent },
       {path: 'members', component: MemberListComponent, canActivate:[authGuard]},
       {path: 'members/:username', component: MemberDetailComponent, resolve:{member: memberDetailedResolver}},
       {path: 'member/edit', component: MemberEditComponent,

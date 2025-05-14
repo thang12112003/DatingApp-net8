@@ -1,6 +1,7 @@
 services:
   sql:
     image: mcr.microsoft.com/azure-sql-edge
+    restart: always
     container_name: sql
     environment:
       ACCEPT_EULA: "1"

@@ -26,5 +26,28 @@ public class AutoMapperProfiles : Profile
             CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
             CreateMap<DateTime?, DateTime?>().ConvertUsing(d => d.HasValue 
                 ? DateTime.SpecifyKind(d.Value, DateTimeKind.Utc) : null);
+
+            CreateMap<Post, PostDto>()
+            .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.UserName))
+            .ForMember(dest => dest.UserPhotoUrl, opt => opt.MapFrom(src =>
+                src.User.Photos != null && src.User.Photos.FirstOrDefault(p => p.IsMain) != null 
+                    ? src.User.Photos.FirstOrDefault(p => p.IsMain)!.Url 
+                    : null));
+
+
+            CreateMap<CreatePostDto, Post>();
+            CreateMap<UpdatePostDto, Post>();
+            CreateMap<PostPhoto, PostPhotoDto>();
+
+            CreateMap<Comment, CommentDto>()
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.UserName))
+                .ForMember(dest => dest.UserPhotoUrl, opt => opt.MapFrom(
+                    src => src.User.Photos != null && src.User.Photos.FirstOrDefault(p => p.IsMain) != null 
+                        ? src.User.Photos.FirstOrDefault(p => p.IsMain)!.Url 
+                        : null));
+
+            CreateMap<CreateCommentDto, Comment>();
+            CreateMap<UpdateCommentDto, Comment>();
+
         }
 }

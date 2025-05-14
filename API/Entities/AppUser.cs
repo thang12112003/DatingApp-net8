@@ -24,6 +24,10 @@ public class AppUser : IdentityUser<int> {
     public List<Message> MessagesReceived { get; set; } = [];
 
     public ICollection<AppUserRole> UserRoles { get; set; } = [];
+    public ICollection<Post>? Posts { get; set; }
+
+    public ICollection<PostLike>? LikedPosts { get; set; } 
+    public ICollection<Comment>? Comments { get; set; }
 
     public int GetAge(){
         return DateOfBirth.CalculateAge();

@@ -1,0 +1,49 @@
+<div class="modal-backdrop" *ngIf="isVisible">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content modal-background">
+      <div class="modal-header d-flex justify-content-between align-items-center">
+        <h5 class="modal-title">Bình luận</h5>
+        <button type="button" class="btn-close btn-close-white" (click)="cancel()" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body d-flex flex-column" style="max-height: 70vh;">
+        <!-- Danh sách bình luận -->
+        <div class="flex-grow-1 overflow-auto comment-scroll-area mb-3">
+          <div *ngFor="let comment of comments" class="comment-box">
+            <div class="d-flex justify-content-between align-items-start">
+              <div class="d-flex align-items-center">
+                <img [src]="comment.userPhotoUrl || 'assets/default-avatar.png'" class="rounded-circle me-2 border" width="30" height="30" alt="Avatar">
+                <strong>{{ comment.username }}</strong>
+              </div>
+              <div *ngIf="comment.username === currentUsername">
+                <button class="btn btn-sm btn-outline-secondary me-1" (click)="startEdit(comment)">✏️</button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteComment(comment.id)">🗑️</button>
+              </div>
+            </div>
+            <small class="text-muted">{{ comment.createdAt | date:'short' }}</small>
+
+            <div *ngIf="editingCommentId === comment.id; else viewMode">
+              <textarea class="form-control mt-2" [(ngModel)]="editingContent" rows="2"></textarea>
+              <div class="mt-1">
+                <button class="btn btn-success btn-sm me-2" (click)="saveEdit(comment.id)">Lưu</button>
+                <button class="btn btn-secondary btn-sm" (click)="cancelEdit()">Hủy</button>
+              </div>
+            </div>
+
+            <ng-template #viewMode>
+              <p class="mt-2">{{ comment.content }}</p>
+            </ng-template>
+            <hr />
+          </div>
+        </div>
+
+        <!-- Nhập bình luận -->
+        <div>
+          <textarea class="form-control mb-2" rows="3" [(ngModel)]="content" placeholder="Nhập bình luận..."></textarea>
+          <div class="text-danger mb-2" *ngIf="errorMessage">{{ errorMessage }}</div>
+          <button class="btn btn-primary w-100" (click)="submitComment()">Gửi bình luận</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
