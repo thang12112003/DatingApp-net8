@@ -1,0 +1,37 @@
+<!-- HTML: login.component.html -->
+<div class="login-wrapper d-flex justify-content-center align-items-center">
+  <div class="card login-card shadow">
+    <div class="card-body">
+      <h2 class="card-title text-center mb-4 text-primary">Login</h2>
+      <form #loginForm="ngForm" (ngSubmit)="login()" autocomplete="off">
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input
+            name="username"
+            [(ngModel)]="model.username"
+            class="form-control"
+            id="username"
+            placeholder="Enter username"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            name="password"
+            [(ngModel)]="model.password"
+            class="form-control"
+            id="password"
+            type="password"
+            placeholder="Enter password"
+            required
+          />
+        </div>
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-outline-secondary" (click)="cancel()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Login</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

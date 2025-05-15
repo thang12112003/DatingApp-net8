@@ -1,0 +1,315 @@
+/* CSS Variables for consistent theming */
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --background-color: #f8f9fa;
+  --text-color: #333;
+  --text-muted: #777;
+  --border-color: #dee2e6;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --shadow-hover: rgba(0, 0, 0, 0.15);
+  --border-radius: 12px;
+  --transition: all 0.3s ease;
+}
+
+/* Container styling */
+.container {
+  max-width: 1200px;
+  padding: 24px;
+  margin: 0 auto;
+}
+
+/* Row styling */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -12px;
+}
+
+/* Heading styling */
+h1 {
+  font-size: 2.25rem;
+  color: var(--text-color);
+  margin-bottom: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Card styling */
+.card {
+  border: none;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  transition: var(--transition);
+  background: #fff;
+}
+
+/* Card hover effect */
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px var(--shadow-hover);
+}
+
+/* Card image styling */
+.card-img-top {
+  object-fit: cover;
+  height: 260px;
+  border-bottom: 2px solid var(--border-color);
+  transition: opacity 0.3s ease;
+}
+
+/* Card image hover effect */
+.card-img-top:hover {
+  opacity: 0.95;
+}
+
+/* Card body styling */
+.card-body {
+  padding: 24px;
+}
+
+/* Card body content spacing */
+.card-body div {
+  margin-bottom: 16px;
+}
+
+/* Card body labels */
+.card-body strong {
+  display: block;
+  color: var(--text-color);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Card body text */
+.card-body p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Card footer styling */
+.card-footer {
+  padding: 16px;
+  background: var(--background-color);
+  border-top: 1px solid var(--border-color);
+}
+
+/* Success button styling */
+.btn-success {
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  background-color: var(--success-color);
+  border-color: var(--success-color);
+  transition: var(--transition);
+}
+
+/* Success button hover effect */
+.btn-success:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+/* Disabled success button */
+.btn-success:disabled {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Info alert styling */
+.alert-info {
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #e7f3fe;
+  border: 1px solid #b8daff;
+  color: #004085;
+  animation: fadeIn 0.5s ease;
+  margin-bottom: 24px;
+  font-size: 0.95rem;
+}
+
+/* Info alert strong text */
+.alert-info strong {
+  font-weight: 600;
+}
+
+/* Tabset styling */
+.member-tabset {
+  margin-top: 24px;
+}
+
+/* Tab navigation styling */
+.tabset .nav-tabs {
+  border-bottom: 2px solid var(--border-color);
+}
+
+/* Tab item spacing */
+.tabset .nav-item {
+  margin-bottom: -2px;
+}
+
+/* Tab link styling */
+.tabset .nav-link {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  border: none;
+  border-bottom: 2px solid transparent;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+/* Tab link hover effect */
+.tabset .nav-link:hover {
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+}
+
+/* Active tab link */
+.tabset .nav-link.active {
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+  background-color: var(--background-color);
+  font-weight: 600;
+}
+
+/* Tab content styling */
+.tabset .tab-content {
+  padding: 24px;
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+}
+
+/* Form control styling */
+.form-control {
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  padding: 12px;
+  font-size: 0.95rem;
+  transition: var(--transition);
+}
+
+/* Form control focus state */
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+/* Textarea styling */
+textarea.form-control {
+  resize: vertical;
+  min-height: 120px;
+  max-height: 300px;
+}
+
+/* Heading inside tabs */
+h4 {
+  font-size: 1.3rem;
+  color: var(--text-color);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+/* Flex container for form inputs */
+.d-flex.align-items-center {
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Form labels */
+.d-flex label {
+  font-weight: 500;
+  color: var(--text-color);
+  margin-bottom: 0;
+}
+
+/* Input width in flex container */
+.d-flex input.form-control {
+  max-width: 220px;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive design for tablets */
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+  }
+
+  .col-4, .col-8 {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 12px;
+  }
+
+  h1 {
+    font-size: 1.9rem;
+  }
+
+  .card-img-top {
+    height: 220px;
+  }
+
+  .btn-success {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+
+  .tabset .nav-link {
+    font-size: 1rem;
+    padding: 10px 18px;
+  }
+
+  .d-flex.align-items-center {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .d-flex input.form-control {
+    max-width: 100%;
+  }
+}
+
+/* Responsive design for mobile */
+@media (max-width: 576px) {
+  .container {
+    padding: 16px;
+  }
+
+  .card-img-top {
+    height: 180px;
+  }
+
+  .card-body {
+    padding: 16px;
+  }
+
+  .tabset .tab-content {
+    padding: 16px;
+  }
+
+  h4 {
+    font-size: 1.15rem;
+  }
+
+  .alert-info {
+    font-size: 0.9rem;
+    padding: 12px;
+  }
+}

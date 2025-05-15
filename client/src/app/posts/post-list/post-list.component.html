@@ -1,0 +1,48 @@
+<div class="container mt-5">
+  <!-- Loading spinner -->
+  <div *ngIf="isLoading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Đang tải...</span>
+    </div>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="errorMessage && !isLoading" class="alert alert-danger text-center">
+    {{ errorMessage }}
+  </div>
+
+  <!-- No posts message -->
+  <div *ngIf="posts.length === 0 && !isLoading && !errorMessage" class="alert alert-info text-center">
+    Không tìm thấy bài viết nào.
+  </div>
+
+  <!-- Post list -->
+  <app-post-tabs
+    [posts]="posts"
+    [currentUsername]="currentUsername"
+    [openMenuPostId]="openMenuPostId"
+    (toggleLike)="toggleLike($event)"
+    (openCommentModal)="openCommentModal($event)"
+    (togglePostMenu)="togglePostMenu($event)"
+    (editPost)="editPost($event)"
+    (deletePost)="deletePost($event)"
+    (openLightbox)="openLightbox($event.post, $event.index)"
+  ></app-post-tabs>
+
+  <!-- Edit Post Modal -->
+  <app-edit-post-modal
+    [post]="selectedPost"
+    [isVisible]="showEditModal"
+    (postUpdated)="handlePostUpdated($event)"
+    (close)="closeEditModal()"
+  ></app-edit-post-modal>
+
+  <!-- Comment Modal -->
+  <app-comment-modal
+    *ngIf="showCommentModal && selectedPostId"
+    [postId]="selectedPostId"
+    [isVisible]="showCommentModal"
+    (close)="closeCommentModal()"
+    (commentAdded)="handleCommentAdded(selectedPostId!)"
+  ></app-comment-modal>
+</div>

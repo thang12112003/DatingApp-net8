@@ -1,0 +1,108 @@
+<div class="modal" [ngClass]="{'show': isVisible}" *ngIf="isVisible">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Post</h5>
+        <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Error message -->
+        <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Form -->
+        <form>
+          <!-- Content -->
+          <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            <textarea
+              id="content"
+              class="form-control"
+              [(ngModel)]="content"
+              name="content"
+              rows="4"
+              placeholder="What's on your mind?"
+              required
+            ></textarea>
+          </div>
+
+          <!-- Current Photos -->
+          <div class="mb-3" *ngIf="post?.photos?.length">
+            <label class="form-label">Current Photos</label>
+            <div class="row g-2">
+              <div class="col-4" *ngFor="let photo of post?.photos;">
+                <div class="position-relative">
+                  <img
+                    [src]="photo.url"
+                    class="img-fluid rounded border"
+                    [class.opacity-50]="deletePhotoPublicIds.includes(photo.publicId)"
+                    [class.border-danger]="deletePhotoPublicIds.includes(photo.publicId)"
+                    alt="Post photo"
+                    style="cursor: pointer; transition: opacity 0.3s;"
+                  />
+                  <button
+                    class="btn btn-sm position-absolute top-0 end-0 m-1"
+                    [ngClass]="{
+                      'btn-danger': !deletePhotoPublicIds.includes(photo.publicId),
+                      'btn-outline-danger': deletePhotoPublicIds.includes(photo.publicId)
+                    }"
+                    (click)="toggleDeletePhoto(photo.publicId)"
+                  >
+                    ✖
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- New Photos -->
+          <div class="mb-3">
+            <label for="newFiles" class="form-label">Add New Photos</label>
+            <input
+              type="file"
+              id="newFiles"
+              class="form-control"
+              (change)="onFileChange($event)"
+              multiple
+              accept="image/*"
+            />
+            <small class="form-text text-muted">
+              Maximum {{ maxPhotosPerPost }} photos per post. {{ newFiles.length }} new photos selected.
+            </small>
+          </div>
+
+          <!-- Preview New Photos -->
+          <div class="row g-2 mt-2" *ngIf="previewUrls.length > 0">
+            <div class="col-4" *ngFor="let url of previewUrls; let i = index; trackBy: trackByFn">
+              <img
+                [src]="url"
+                class="img-fluid rounded border"
+                alt="Preview"
+                style="max-height: 120px; object-fit: cover;"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()" [disabled]="isLoading">
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="saveChanges()"
+          [disabled]="isLoading || !content.trim()"
+        >
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status"></span>
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" [ngClass]="{'show': isVisible}" *ngIf="isVisible"></div>

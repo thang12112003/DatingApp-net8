@@ -1,0 +1,11 @@
+.img-fluid {
+  max-height:auto;
+  max-width: 100%;
+  object-fit: cover;
+  border: 1px solid #dee2e6;
+}
+button.position-absolute {
+  padding: 0 6px;
+  font-size: 0.85rem;
+  line-height: 1;
+}

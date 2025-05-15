@@ -1,0 +1,35 @@
+/* CSS: login.component.css */
+
+.login-wrapper {
+  height: 80vh;
+  background: linear-gradient(to right, #fdfdfd, #fbe9e5);
+  padding: 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  border: none;
+  border-radius: 16px;
+  background-color: #fff;
+  padding: 30px;
+}
+
+.card-title {
+  font-weight: bold;
+  color: #e95420;
+}
+
+.btn-primary {
+  background-color: #e95420;
+  border-color: #e95420;
+}
+
+.btn-primary:hover {
+  background-color: #cf4213;
+  border-color: #cf4213;
+}
+
+.btn-outline-secondary {
+  border-radius: 6px;
+}
