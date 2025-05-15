@@ -10,11 +10,18 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ConfirmDialogComponent } from '../../modals/confirm-dialog/confirm-dialog.component';
 import { forkJoin } from 'rxjs';
 import { BusyService } from '../../_services/busy.service';
+import { PostTabsComponent } from '../post-tabs/post-tabs.component';
 
 @Component({
   selector: 'app-post-list',
   standalone: true,
-  imports: [CommonModule, LightboxModule, EditPostModalComponent, CommentModalComponent],
+  imports: [
+    CommonModule,
+    LightboxModule,
+    EditPostModalComponent,
+    CommentModalComponent,
+    PostTabsComponent
+  ],
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.css']
 })
@@ -42,7 +49,7 @@ export class PostListComponent implements OnInit {
     lightboxConfig.resizeDuration = 0.5;
     lightboxConfig.wrapAround = true;
     lightboxConfig.showImageNumberLabel = true;
-    lightboxConfig.albumLabel = 'Image %1 of %2';
+    lightboxConfig.albumLabel = 'Ảnh %1 của %2';
     lightboxConfig.centerVertically = true;
     lightboxConfig.disableScrolling = true;
     lightboxConfig.showZoom = true;

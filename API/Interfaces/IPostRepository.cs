@@ -8,6 +8,7 @@ namespace API.Interfaces
         void UpdatePost(Post post);
         void DeletePost(Post post);
         Task<Post?> GetPostById(int id);
+        Task<IEnumerable<Post>> GetPostsByUserId(int userId);
         Task<IEnumerable<Post>> GetPostsWithUsers();
     }
 }

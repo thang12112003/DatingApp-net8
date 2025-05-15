@@ -28,7 +28,7 @@ namespace API.Data.Repositories
         {
             return await _context.Posts
                 .Include(p => p.User)
-                    .ThenInclude(u => u.Photos)
+                .ThenInclude(u => u.Photos)
                 .Include(p => p.Photos)
                 .OrderByDescending(p => p.CreatedAt)
                 .ToListAsync();
@@ -38,10 +38,18 @@ namespace API.Data.Repositories
         {
             return await _context.Posts
                 .Include(p => p.User)
-                    .ThenInclude(u => u.Photos)
+                .ThenInclude(u => u.Photos)
                 .Include(p => p.Photos)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
-
+        public async Task<IEnumerable<Post>> GetPostsByUserId(int userId)
+        {
+            return await _context.Posts
+                .Where(p => p.UserId == userId)
+                .Include(p => p.Photos)
+                .Include(p => p.User)
+                .OrderByDescending(p => p.CreatedAt)
+                .ToListAsync();
+        }
     }
 }

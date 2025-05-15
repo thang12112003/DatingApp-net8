@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PostService } from '../../_services/post.service';
@@ -25,18 +25,18 @@ export class EditPostModalComponent {
   errorMessage: string | null = null;
   isLoading = false;
 
-  constructor(private postService: PostService) {}
+  constructor(private postService: PostService, private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(): void {
     if (this.post && this.isVisible) {
       this.content = this.post.content;
       this.newFiles = [];
-      this.previewUrls = [];
+      this.previewUrls = this.post.photos?.map(p => p.url) || [];
       this.deletePhotoPublicIds = [];
       this.errorMessage = null;
+      this.cdr.detectChanges();
     }
   }
-
 
   onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -46,17 +46,20 @@ export class EditPostModalComponent {
       const photosAfterDelete = currentPhotosCount - this.deletePhotoPublicIds.length;
 
       if (photosAfterDelete + newFiles.length > this.maxPhotosPerPost) {
-        this.errorMessage = `Tổng số ảnh không được vượt quá ${this.maxPhotosPerPost}.`;
+        this.errorMessage = `Total number of photos cannot exceed ${this.maxPhotosPerPost}.`;
         input.value = '';
         return;
       }
 
       this.newFiles = newFiles;
-      this.previewUrls = newFiles.map(file => URL.createObjectURL(file));
+      this.previewUrls = [
+        ...(this.post?.photos?.filter(p => !this.deletePhotoPublicIds.includes(p.publicId)).map(p => p.url) || []),
+        ...newFiles.map(file => URL.createObjectURL(file))
+      ];
       this.errorMessage = null;
+      this.cdr.detectChanges();
     }
   }
-
 
   toggleDeletePhoto(publicId: string): void {
     const index = this.deletePhotoPublicIds.indexOf(publicId);
@@ -65,6 +68,12 @@ export class EditPostModalComponent {
     } else {
       this.deletePhotoPublicIds.push(publicId);
     }
+    // Cập nhật previewUrls để phản ánh ảnh bị đánh dấu xóa
+    this.previewUrls = [
+        ...(this.post?.photos?.filter(p => !this.deletePhotoPublicIds.includes(p.publicId)).map(p => p.url) || []),
+        ...this.newFiles.map(file => URL.createObjectURL(file))
+    ];
+    this.cdr.detectChanges();
   }
 
   async saveChanges(): Promise<void> {
@@ -96,7 +105,7 @@ export class EditPostModalComponent {
     try {
       const response = await this.postService.updatePost(this.post.id, formData).toPromise();
       this.postUpdated.emit(response);
-      this.close.emit();
+      this.closeModal();
     } catch (err: any) {
       if (err.status === 404) {
         this.errorMessage = 'Post not found. It may have been deleted.';
@@ -108,13 +117,25 @@ export class EditPostModalComponent {
       console.error('Update post error:', err);
     } finally {
       this.isLoading = false;
+      this.cdr.detectChanges();
     }
   }
-  getImagePreview(file: File): string {
-    return URL.createObjectURL(file);
+
+  closeModal(): void {
+    this.close.emit();
+    // Thu hồi các URL blob để tránh rò rỉ bộ nhớ
+    this.previewUrls
+      .filter(url => url.startsWith('blob:'))
+      .forEach(url => URL.revokeObjectURL(url));
+    this.previewUrls = [];
+    this.newFiles = [];
+    this.deletePhotoPublicIds = [];
+    this.content = '';
+    this.errorMessage = null;
+    this.isLoading = false;
   }
 
-  cancel(): void {
-    this.close.emit();
+  trackByFn(index: number, item: string): number {
+    return index;
   }
 }

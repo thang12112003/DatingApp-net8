@@ -9,15 +9,17 @@ import { TestErrorsComponent } from './errors/test-errors/test-errors.component'
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { MemberEditComponent } from './member/member-edit/member-edit.component';
-import { preserveWhitespacesDefault } from '@angular/compiler';
 import { preventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
 import { memberDetailedResolver } from './_resolvers/member-detailed.resolver';
 import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 import { adminGuard } from './_guards/admin.guard';
 import { PostListComponent } from './posts/post-list/post-list.component';
+import { LoginComponent } from './login/login.component';
+import { redirectIfAuthenticatedGuard } from './_guards/redirect-if-auth.guard';
 
 export const routes: Routes = [
-  {path: '', component: HomeComponent},
+  { path: '', component: HomeComponent, canActivate: [redirectIfAuthenticatedGuard] },
+  { path: 'login', component: LoginComponent, canActivate: [redirectIfAuthenticatedGuard] },
   {
     path: '',
     runGuardsAndResolvers: 'always',

@@ -1,35 +1,21 @@
 import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { AccountService } from '../_services/account.service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { AccountService } from '../_services/account.service';
 import { HasRoleDirective } from '../_directives/has-role.directive';
 
 @Component({
   selector: 'app-nav',
-  imports: [FormsModule, RouterLink, RouterLinkActive, HasRoleDirective],
+  standalone: true,
+  imports: [RouterLink, RouterLinkActive, HasRoleDirective],
   templateUrl: './nav.component.html',
-  styleUrl: './nav.component.css'
+  styleUrls: ['./nav.component.css']
 })
 export class NavComponent {
   accountService = inject(AccountService);
   private router = inject(Router);
-  private toastr = inject(ToastrService);
-  model: any = {};
 
-  login(){
-    console.log(this.accountService.currentUser())
-
-    this.accountService.login(this.model).subscribe({
-      next: _ =>{
-        this.router.navigateByUrl("/posts")
-      },
-      error: error => this.toastr.error(error.error)
-    })
-  }
-
-  logout(){
+  logout() {
     this.accountService.logout();
-    this.router.navigateByUrl("/")
+    this.router.navigateByUrl('/');
   }
 }

@@ -92,6 +92,32 @@ namespace API.Controllers
             return Ok(_mapper.Map<PostDto>(post));
         }
 
+        [HttpGet("my-posts")]
+        public async Task<ActionResult<IEnumerable<PostDto>>> GetMyPosts()
+        {
+            var username = User.GetUsername();
+            var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(username);
+
+            if (user == null) return Unauthorized("User not found");
+
+            var posts = await _unitOfWork.PostRepository.GetPostsByUserId(user.Id);
+
+            return Ok(_mapper.Map<IEnumerable<PostDto>>(posts));
+        }
+
+        [AllowAnonymous]
+        [HttpGet("user/{username}")]
+        public async Task<ActionResult<IEnumerable<PostDto>>> GetPostsByUsername(string username)
+        {
+            var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(username);
+
+            if (user == null) return NotFound("User not found");
+
+            var posts = await _unitOfWork.PostRepository.GetPostsByUserId(user.Id);
+
+            return Ok(_mapper.Map<IEnumerable<PostDto>>(posts));
+        }
+
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdatePost(int id, [FromForm] string content, [FromForm] List<IFormFile>? newFiles, [FromForm] string? deletePhotoPublicIds)
         {

@@ -2,7 +2,7 @@
   <!-- Loading spinner -->
   <div *ngIf="isLoading" class="text-center my-5">
     <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
+      <span class="visually-hidden">Đang tải...</span>
     </div>
   </div>
 
@@ -16,88 +16,33 @@
     Không tìm thấy bài viết nào.
   </div>
 
- <!-- Post list -->
- <div *ngFor="let post of posts" class="card mb-4 shadow-sm border-0 animate__animated animate__fadeIn">
-  <!-- Header -->
-  <div class="card-header bg-light d-flex align-items-center justify-content-between position-relative">
-    <div class="d-flex align-items-center">
-      <img [src]="post.userPhotoUrl || 'assets/default-avatar.png'" class="rounded-circle me-3 border" width="50"
-        height="50" alt="Avatar">
-      <div>
-        <strong>{{ post.username }}</strong><br>
-        <small class="text-muted">{{ post.createdAt | date:'medium' }}</small>
-      </div>
-    </div>
-    <div class="menu-wrapper">
-      <button class="menu-btn" (click)="togglePostMenu(post.id)">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="4" r="2" fill="currentColor" />
-          <circle cx="12" cy="12" r="2" fill="currentColor" />
-          <circle cx="12" cy="20" r="2" fill="currentColor" />
-        </svg>
-      </button>
-      <div class="menu-dropdown" [ngClass]="{'show': openMenuPostId === post.id}">
-        @if(isCurrentUser(post.username)) {
-          <button class="dropdown-item" (click)="editPost(post)">Sửa</button>
-          <button class="dropdown-item text-danger" (click)="deletePost(post.id)">Xóa</button>
-        } @else {
-          <button class="dropdown-item">Báo cáo</button>
-        }
-      </div>
-    </div>
-  </div>
+  <!-- Post list -->
+  <app-post-tabs
+    [posts]="posts"
+    [currentUsername]="currentUsername"
+    [openMenuPostId]="openMenuPostId"
+    (toggleLike)="toggleLike($event)"
+    (openCommentModal)="openCommentModal($event)"
+    (togglePostMenu)="togglePostMenu($event)"
+    (editPost)="editPost($event)"
+    (deletePost)="deletePost($event)"
+    (openLightbox)="openLightbox($event.post, $event.index)"
+  ></app-post-tabs>
 
-  <!-- Body -->
-  <div class="card-body">
-    <p class="mb-3">{{ post.content }}</p>
+  <!-- Edit Post Modal -->
+  <app-edit-post-modal
+    [post]="selectedPost"
+    [isVisible]="showEditModal"
+    (postUpdated)="handlePostUpdated($event)"
+    (close)="closeEditModal()"
+  ></app-edit-post-modal>
 
-    <!-- Photos -->
-    <div class="row g-2" *ngIf="post.photos?.length">
-      <div class="col-6 col-md-4" *ngFor="let photo of post.photos | slice:0:3; let i = index">
-        <img [src]="photo.url" class="img-fluid rounded photo-hover" alt="Ảnh bài viết" (click)="openLightbox(post, i)"
-          style="cursor: pointer;">
-      </div>
-
-      <!-- View more photos -->
-      <div class="col-12 text-center mt-2" *ngIf="post.photos!.length > 3">
-        <button class="btn btn-outline-primary btn-sm" (click)="openLightbox(post, 3)">
-          Xem thêm {{ post.photos!.length - 3 }} ảnh
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer (Actions) -->
-  <div class="card-footer bg-white d-flex justify-content-around border-top">
-    <button class="btn btn-sm action-btn"
-            [ngClass]="{'btn-primary': post.isLiked, 'btn-outline-primary': !post.isLiked}"
-            (click)="toggleLike(post)">
-      <i class="bi bi-hand-thumbs-up"></i> Thích ({{ post.likeCount || 0 }})
-    </button>
-    <button class="btn btn-sm action-btn btn-outline-secondary"
-            (click)="openCommentModal(post.id)">
-      <i class="bi bi-chat-dots"></i> Bình luận ({{ post.commentCount || 0 }})
-    </button>
-    <button class="btn btn-outline-success btn-sm action-btn">
-      <i class="bi bi-share"></i> Chia sẻ
-    </button>
-  </div>
-</div>
-
-<!-- Edit Post Modal -->
-<app-edit-post-modal
-  [post]="selectedPost"
-  [isVisible]="showEditModal"
-  (postUpdated)="handlePostUpdated($event)"
-  (close)="closeEditModal()"
-></app-edit-post-modal>
-
-<!-- Comment Modal -->
-<app-comment-modal
-  *ngIf="showCommentModal && selectedPostId"
-  [postId]="selectedPostId"
-  [isVisible]="showCommentModal"
-  (close)="closeCommentModal()"
-  (commentAdded)="handleCommentAdded(selectedPostId!)"
-></app-comment-modal>
+  <!-- Comment Modal -->
+  <app-comment-modal
+    *ngIf="showCommentModal && selectedPostId"
+    [postId]="selectedPostId"
+    [isVisible]="showCommentModal"
+    (close)="closeCommentModal()"
+    (commentAdded)="handleCommentAdded(selectedPostId!)"
+  ></app-comment-modal>
 </div>

@@ -29,6 +29,14 @@ export class PostService {
     return this.http.get<Post[]>(`${this.baseUrl}posts`);
   }
 
+  getMyPosts(): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.baseUrl}posts/my-posts`);
+  }
+
+  getUserPosts(username: string): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.baseUrl}posts/user/${username}`);
+  }
+
   getPost(id: number): Observable<Post> {
     return this.http.get<Post>(`${this.baseUrl}posts/${id}`);
   }
@@ -41,7 +49,6 @@ export class PostService {
     return this.http.delete(`${this.baseUrl}posts/${id}`);
   }
 
-  //like post
   toggleLike(postId: number): Observable<void> {
     return this.http.post<void>(`${this.likeUrl}/${postId}`, {});
   }
@@ -54,21 +61,20 @@ export class PostService {
     return this.http.get<boolean>(`${this.likeUrl}/${postId}/is-liked`);
   }
 
-  //Comment
   createComment(comment: { postId: number; content: string }): Observable<any> {
-    return this.http.post(this.baseUrl + 'comments', comment);
+    return this.http.post(`${this.baseUrl}comments`, comment);
   }
 
   getComments(postId: number): Observable<any[]> {
-    return this.http.get<any[]>(this.baseUrl + 'comments/post/' + postId);
+    return this.http.get<any[]>(`${this.baseUrl}comments/post/${postId}`);
   }
 
   updateComment(id: number, content: string): Observable<any> {
-    return this.http.put(this.baseUrl + 'comments/' + id, { content });
+    return this.http.put(`${this.baseUrl}comments/${id}`, { content });
   }
 
   deleteComment(id: number): Observable<any> {
-    return this.http.delete(this.baseUrl + 'comments/' + id);
+    return this.http.delete(`${this.baseUrl}comments/${id}`);
   }
 
   getCommentsCount(postId: number): Observable<number> {

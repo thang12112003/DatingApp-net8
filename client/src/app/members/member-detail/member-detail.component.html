@@ -1,69 +1,112 @@
-<div class="row">
-  <div class="col-4">
-    <div class="card">
-      <img src="{{member.photoUrl || 'https://res.cloudinary.com/dqfmh4yif/image/upload/v1741941116/Dating-app/bqgtq2hhpu0xcdjfmj2d.png'}}"
-           alt="{{member.knownAs}}"
-           class="card-img-top img-thumbnail">
-      <div class="card-body">
-        @if (isOnline()) {
-          <div class="mb-2">
-            <i class="fa fa-user-circle text-success"></i> Online now
+<div class="container">
+  <div class="row">
+    <div class="col-4">
+      <div class="card">
+        <img [src]="member.photoUrl || 'https://res.cloudinary.com/dqfmh4yif/image/upload/v1741941116/Dating-app/bqgtq2hhpu0xcdjfmj2d.png'"
+             [alt]="member.knownAs"
+             class="card-img-top img-thumbnail">
+        <div class="card-body">
+          @if (isOnline()) {
+            <div class="mb-2">
+              <i class="fa fa-user-circle text-success"></i> Online now
+            </div>
+          }
+          <div>
+            <strong>Location:</strong>
+            <p>{{member.city}}, {{member.country}}</p>
           </div>
-        }
-        <div>
-          <strong>Location:</strong>
-          <p>{{member.city}}, {{member.country}}</p>
+          <div>
+            <strong>Age:</strong>
+            <p>{{member.age}}</p>
+          </div>
+          <div>
+            <strong>Last Active:</strong>
+            <p>{{member.lastActive | timeago}}</p>
+          </div>
+          <div>
+            <strong>Member since:</strong>
+            <p>{{member.created | date: 'dd MMM yyyy'}}</p>
+          </div>
         </div>
-        <div>
-          <strong>Age:</strong>
-          <p>{{member.age}}</p>
-        </div>
-        <div>
-          <strong>Last Active:</strong>
-          <p>{{member.lastActive | timeago}}</p>
-        </div>
-        <div>
-          <strong>Member since:</strong>
-          <p>{{member.created | date: 'dd MMM yyyy'}}</p>
-        </div>
-      </div>
-      <div class="card-footer">
-        <div class="btn-group d-flex">
-          <button class="btn btn-primary" (click)="toggleLike()">
-            <i class="fa" [ngClass]="{'fa-heart': hasLiked(), 'fa-heart-o': !hasLiked()}"></i>
-            {{ hasLiked() ? 'Unlike' : 'Like' }}
-          </button>
-          <button (click)="selectTab('Messages')" class="btn btn-success">Message</button>
+        <div class="card-footer">
+          <div class="btn-group d-flex">
+            <button class="btn btn-primary" (click)="toggleLike()">
+              <i class="fa" [ngClass]="{'fa-heart': hasLiked(), 'fa-heart-o': !hasLiked()}"></i>
+              {{ hasLiked() ? 'Unlike' : 'Like' }}
+            </button>
+            <button (click)="selectTab('Messages')" class="btn btn-success">Message</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="col-8">
-    <tabset class="member-tabset" #membertabs>
-      <tab heading="About {{member.knownAs}}" (selectTab)="onTabActivated($event)">
-        <h4>Description</h4>
-        <p>{{member.introduction}}</p>
-        <h4>Looking for</h4>
-        <p>{{member.lookingFor}}</p>
-      </tab>
-      <tab heading="Interests" (selectTab)="onTabActivated($event)">
-        <h4>Interests</h4>
-        <p>{{member.interests}}</p>
-      </tab>
-      <tab heading="Photos" #photoTab="tab" (selectTab)="onTabActivated($event)">
-        @if (photoTab.active) {
-          <gallery
-            [items]="images"
-            [itemAutosize]="true"
-            class="gallery"
-          ></gallery>
-        }
-      </tab>
-      <tab heading="Messages" (selectTab)="onTabActivated($event)">
-        <app-member-messages
-          [username]="member.username"
-        ></app-member-messages>
-      </tab>
-    </tabset>
+    <div class="col-8">
+      <tabset class="member-tabset" #membertabs>
+        <tab heading="About {{member.knownAs}}" (selectTab)="onTabActivated($event)">
+          <h4>Description</h4>
+          <p>{{member.introduction}}</p>
+          <h4>Looking for</h4>
+          <p>{{member.lookingFor}}</p>
+        </tab>
+        <tab heading="Interests" (selectTab)="onTabActivated($event)">
+          <h4>Interests</h4>
+          <p>{{member.interests}}</p>
+        </tab>
+        <tab heading="Photos" #photoTab="tab" (selectTab)="onTabActivated($event)">
+          @if (photoTab.active) {
+            <gallery
+              [items]="images"
+              [itemAutosize]="true"
+              class="gallery"
+            ></gallery>
+          }
+        </tab>
+        <tab heading="Posts" (selectTab)="onTabActivated($event)">
+          <div *ngIf="isLoading" class="text-center my-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          <div *ngIf="errorMessage && !isLoading" class="alert alert-danger text-center">
+            {{ errorMessage }}
+          </div>
+          <div *ngIf="posts.length === 0 && !isLoading && !errorMessage" class="alert alert-info text-center">
+            No posts found.
+          </div>
+          <app-post-tabs
+            [posts]="posts"
+            [currentUsername]="currentUsername"
+            [openMenuPostId]="openMenuPostId"
+            (toggleLike)="togglePostLike($event)"
+            (openCommentModal)="openCommentModal($event)"
+            (togglePostMenu)="togglePostMenu($event)"
+            (editPost)="editPost($event)"
+            (deletePost)="deletePost($event)"
+            (openLightbox)="openLightbox($event.post, $event.index)"
+          ></app-post-tabs>
+        </tab>
+        <tab heading="Messages" (selectTab)="onTabActivated($event)">
+          <app-member-messages
+            [username]="member.username"
+          ></app-member-messages>
+        </tab>
+      </tabset>
+    </div>
+
+    <!-- Edit Post Modal -->
+    <app-edit-post-modal
+      [post]="selectedPost"
+      [isVisible]="showEditModal"
+      (postUpdated)="handlePostUpdated($event)"
+      (close)="closeEditModal()"
+    ></app-edit-post-modal>
+
+    <!-- Comment Modal -->
+    <app-comment-modal
+      *ngIf="showCommentModal && selectedPostId"
+      [postId]="selectedPostId"
+      [isVisible]="showCommentModal"
+      (close)="closeCommentModal()"
+      (commentAdded)="handleCommentAdded(selectedPostId!)"
+    ></app-comment-modal>
   </div>
 </div>

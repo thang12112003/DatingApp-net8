@@ -1,9 +1,19 @@
-import { Component, EventEmitter, Input, Output, inject, OnInit, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  inject,
+  OnInit,
+  AfterViewInit
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PostService } from '../../_services/post.service';
-import { Comment } from '../../_models/Comment';
+import { Comment } from '../../_models/comment';
 import { AccountService } from '../../_services/account.service';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { ConfirmDialogComponent } from '../../modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-comment-modal',
@@ -20,6 +30,7 @@ export class CommentModalComponent implements OnInit, AfterViewInit {
 
   private postService = inject(PostService);
   private accountService = inject(AccountService);
+  private modalService = inject(BsModalService);
 
   content = '';
   errorMessage: string | null = null;
@@ -119,18 +130,31 @@ export class CommentModalComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    if (!confirm('Bạn có chắc muốn xóa bình luận này?')) return;
+    const initialState = {
+      title: 'Xác nhận xóa',
+      message: 'Bạn có chắc muốn xóa bình luận này?',
+      btnOkText: 'Xóa',
+      btnCancelText: 'Hủy'
+    };
 
-    this.postService.deleteComment(commentId).subscribe({
-      next: () => {
-        this.loadComments();
-        this.commentAdded.emit();
-      },
-      error: err => {
-        this.errorMessage = 'Không thể xóa bình luận.';
-        console.error('Lỗi khi xóa bình luận', err);
-      }
-    });
+    const modalRef = this.modalService.show(ConfirmDialogComponent, { initialState });
+
+    if (modalRef.content) {
+      modalRef.content.onClose.subscribe((result: boolean) => {
+        if (result) {
+          this.postService.deleteComment(commentId).subscribe({
+            next: () => {
+              this.loadComments();
+              this.commentAdded.emit();
+            },
+            error: err => {
+              this.errorMessage = 'Không thể xóa bình luận.';
+              console.error('Lỗi khi xóa bình luận', err);
+            }
+          });
+        }
+      });
+    }
   }
 
   cancel(): void {

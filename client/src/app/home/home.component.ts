@@ -1,21 +1,25 @@
-import { Component } from '@angular/core';
-import { RegisterComponent } from "../register/register.component";
-
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { RegisterComponent } from '../register/register.component';
 
 @Component({
   selector: 'app-home',
-  imports: [RegisterComponent],
+  standalone: true,
+  imports: [RegisterComponent, RouterLink],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
   registerMode = false;
+  private router = inject(Router);
 
-
-  registerToggle(){
+  registerToggle() {
     this.registerMode = !this.registerMode;
   }
 
+  login() {
+    this.router.navigateByUrl('/login');
+  }
 
   cancelRegisterMode(event: boolean) {
     this.registerMode = event;
